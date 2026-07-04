@@ -22,6 +22,7 @@
   --gold-strong:#C9832A;
   --gold-soft:rgba(227,162,60,.16);
   --coral:#E15347;
+  --coral-strong:#B83C32;
   --border:rgba(28,32,51,.12);
   --border-strong:rgba(28,32,51,.22);
   --shadow:0 20px 45px -18px rgba(20,21,28,.28);
@@ -116,9 +117,9 @@ html[data-theme="dark"] .theme-toggle .knob{left:31px;background:var(--gold);}
 
 .new-section-btn{
   display:flex;align-items:center;gap:8px;margin:0 auto;border:none;
-  background:var(--gold);color:#181205;font-weight:600;font-size:.95rem;
+  background:var(--gold);color:var(--badge-contrast, #181205);font-weight:600;font-size:.95rem;
   padding:13px 24px;border-radius:999px;box-shadow:0 10px 26px -10px rgba(var(--gold-rgb, 227,162,60),.55);
-  transition:transform .18s ease, box-shadow .18s ease;
+  transition:transform .18s ease, box-shadow .18s ease, color .35s ease;
 }
 .new-section-btn:hover{transform:translateY(-2px);box-shadow:0 14px 30px -8px rgba(var(--gold-rgb, 227,162,60),.65);}
 .new-section-btn svg{width:17px;height:17px;}
@@ -188,7 +189,7 @@ main{padding:34px 0 90px;}
 }
 .filter-item:hover { background: var(--gold-soft); color: var(--gold-strong); }
 html[data-theme="dark"] .filter-item:hover { color: var(--gold); }
-.filter-item.active { background: var(--gold); color: #181205; }
+.filter-item.active { background: var(--gold); color: var(--badge-contrast, #181205); }
 .filter-item svg { width: 14px; height: 14px; opacity: 0; transform: scale(0.8); transition: all .2s ease; }
 .filter-item.active svg { opacity: 1; transform: scale(1); }
 
@@ -233,10 +234,11 @@ html[data-theme="dark"] .filter-item:hover { color: var(--gold); }
 
 .card .reel-icon{
   position:absolute;top:125px;right:13px;z-index:5; 
-  width:40px;height:40px;border-radius:10px;background:var(--gold);color:#181205; 
+  width:40px;height:40px;border-radius:10px;background:var(--gold);color:var(--badge-contrast, #181205); 
   display:grid;place-items:center;
   box-shadow:0 4px 10px rgba(0,0,0,0.25);
   border:3px solid var(--paper-raised); 
+  transition: color 0.35s ease, background 0.35s ease;
 }
 .card .reel-icon svg{width:14px;height:14px;}
 
@@ -305,6 +307,25 @@ html[data-theme="dark"] .add-url-btn{color:var(--gold);}
   width:100%;height:100%;display:flex;align-items:center;justify-content:center;
   font-family:'Fraunces',serif;font-size:1.4rem;color:rgba(255,255,255,.92);font-weight:600;
 }
+
+/* AUTOMATIC URL TYPE BADGE (WITH CONTRAST TEXT) */
+.thumb .url-type-badge {
+  position: absolute; top: 6px; left: 6px; z-index: 4;
+  width: 24px; height: 24px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: rgba(20, 21, 28, 0.8); color: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.15);
+  transition: background 0.2s ease, transform 0.2s ease, color 0.2s ease;
+}
+.vcard:hover .url-type-badge {
+  transform: scale(1.05); 
+  background: var(--gold); 
+  color: var(--badge-contrast, #181205); 
+  border-color: transparent;
+}
+.thumb .url-type-badge svg { width: 12px; height: 12px; }
+
 .thumb .play{
   position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
   background:rgba(10,10,14,0);transition:background .2s ease;
@@ -322,20 +343,40 @@ html[data-theme="dark"] .add-url-btn{color:var(--gold);}
   opacity:0;transition:opacity .2s ease;
 }
 .vcard:hover .thumb-sprocket{opacity:1;}
-.vinfo{padding:8px 10px 10px;}
+
+/* TEXT CONTAINER REALIGNMENT */
+.vinfo{padding:10px 10px 12px;}
 
 .vinfo .domain {
   font-size: .8rem; font-weight: 700; color: var(--gold); 
   margin: 0 0 4px; word-break: break-word; display: -webkit-box;
-  -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.3;
+  -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.3;
 }
 
-.vinfo .url-line{font-size:.65rem;color:var(--ink-faint);margin:0 0 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.vinfo .timecode{font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--ink-faint);display:flex;align-items:center;gap:4px;}
-.vinfo .timecode svg{width:9px;height:9px;}
+.vinfo .url-line{font-size:.65rem;color:var(--ink-faint);margin:0 0 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+/* BOTTOM TEXT AREA COPY CONTAINER & PERSISTENT DATE LAYOUT */
+.vinfo .meta-action-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: auto;
+}
+
+.vinfo .vtext-copy-btn {
+  display: flex; align-items: center; justify-content: center; gap: 4px;
+  border: none; background: transparent; padding: 2px 0; color: var(--ink-soft);
+  font-size: 0.72rem; font-weight: 500; font-family: inherit; transition: color 0.15s ease;
+}
+.vcard:hover .vtext-copy-btn { color: var(--gold); }
+.vinfo .vtext-copy-btn svg { width: 12px; height: 12px; flex-shrink: 0; }
+
+.vinfo .timecode{
+  font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--ink-faint);
+  display:flex;align-items:center;gap:4px;white-space:nowrap; flex-shrink: 0; margin-left: auto;
+}
+.vinfo .timecode svg { width:9px; height:9px; }
+
 .vcard .vdelete{
   position:absolute;top:6px;right:6px;width:22px;height:24px;border-radius:50%;border:none;
-  background:rgba(10,10,14,.55);color:#fff;display:grid;place-items:center;opacity:0;transition:opacity .15s,background .15s;z-index:2;
+  background:rgba(10,10,14,.55);color:#fff;display:grid;place-items:center;opacity:0;transition:opacity .15s,background .15s;z-index:12;
 }
 .vcard:hover .vdelete{opacity:1;}
 .vcard .vdelete:hover{background:var(--coral);}
@@ -407,8 +448,10 @@ html[data-theme="dark"] .add-url-inline:hover{color:var(--gold);}
 .btn{border:none;border-radius:999px;padding:11px 22px;font-weight:600;font-size:.9rem;}
 .btn-ghost{background:transparent;color:var(--ink-soft);}
 .btn-ghost:hover{background:var(--border);color:var(--ink);}
-.btn-gold{background:var(--gold);color:#181205;box-shadow:0 10px 22px -10px rgba(var(--gold-rgb, 227,162,60),.55);}
+.btn-gold{background:var(--gold);color:var(--badge-contrast, #181205);box-shadow:0 10px 22px -10px rgba(var(--gold-rgb, 227,162,60),.55);transition: color 0.35s ease;}
 .btn-gold:hover{background:var(--gold-strong);}
+.btn-coral{background:var(--coral);color:#fff;box-shadow:0 10px 22px -10px rgba(225,83,71,.45);}
+.btn-coral:hover{background:var(--coral-strong);}
 .error-msg{color:var(--coral);font-size:.82rem;margin:-6px 0 12px;display:none;}
 .error-msg.show{display:block;}
 
@@ -650,6 +693,22 @@ footer{padding:26px 0 40px;text-align:center;color:var(--ink-faint);font-size:.8
   </div>
 </div>
 
+<div class="overlay" id="confirmDeleteOverlay">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal-head">
+      <h3 style="color:var(--coral);">Delete Confirmation</h3>
+      <button class="modal-close" id="closeConfirmDeleteModal" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <p style="margin: 4px 0 12px; font-size: 0.98rem; line-height: 1.5; color: var(--ink);" id="confirmDeleteMessage">Are you sure you want to completely delete this target item?</p>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" id="declineDeleteBtn" type="button">Cancel</button>
+      <button class="btn btn-coral" id="confirmDeleteBtn" type="button">Delete Link</button>
+    </div>
+  </div>
+</div>
+
 <script>
 (function(){
   "use strict";
@@ -661,6 +720,9 @@ footer{padding:26px 0 40px;text-align:center;color:var(--ink-faint);font-size:.8
   var state = { sections: [] };
   var activeSectionId = null;
   var currentSortValue = "newest"; 
+
+  // Global closure hook variable object to handle delete context
+  var deleteContext = { type: null, sectionId: null, urlId: null };
 
   function loadState(){
     try{
@@ -692,16 +754,22 @@ footer{padding:26px 0 40px;text-align:center;color:var(--ink-faint);font-size:.8
     return { title: null, image: null };
   }
 
-  /* ---------------- HELPER FOR HEX CONVERSION ---------------- */
+  /* ---------------- HELPER FOR HEX CONVERSION & CONTRAST ---------------- */
   function hexToRgb(hex) {
     var c = hex.substring(1);
     if(c.length === 3) {
       c = c[0]+c[0]+c[1]+c[1]+c[2]+c[2];
     }
     var num = parseInt(c, 16);
-    return [ (num >> 16) & 255, (num >> 8) & 255, num & 255 ].join(",");
+    return [ (num >> 16) & 255, (num >> 8) & 255, num & 255 ];
   }
   
+  function getBrightnessContrastColor(hex) {
+    var rgb = hexToRgb(hex);
+    var yiq = ((rgb[0] * 299) + (rgb[1] * 587) + (rgb[2] * 114)) / 1000;
+    return (yiq >= 128) ? "#14151C" : "#FFFFFF";
+  }
+
   function shadeColor(color, percent) {
     var num = parseInt(color.replace("#",""),16),
     amt = Math.round(2.55 * percent),
@@ -717,13 +785,16 @@ footer{padding:26px 0 40px;text-align:center;color:var(--ink-faint);font-size:.8
     
     var root = document.documentElement;
     var strongColor = shadeColor(hexCode, -12); 
-    var rgbString = hexToRgb(hexCode);
+    var rgbArr = hexToRgb(hexCode);
+    var rgbString = rgbArr.join(",");
     var softColor = "rgba(" + rgbString + ",.16)";
+    var contrastText = getBrightnessContrastColor(hexCode);
 
     root.style.setProperty("--gold", hexCode);
     root.style.setProperty("--gold-strong", strongColor);
     root.style.setProperty("--gold-soft", softColor);
     root.style.setProperty("--gold-rgb", rgbString);
+    root.style.setProperty("--badge-contrast", contrastText);
     
     try{ localStorage.setItem(SHADE_KEY, hexCode); }catch(e){}
     
@@ -776,18 +847,6 @@ footer{padding:26px 0 40px;text-align:center;color:var(--ink-faint);font-size:.8
     try{ localStorage.setItem(THEME_KEY, next); }catch(e){}
   });
 
-  /* ---------------- SETTINGS MODAL INTERACTION ---------------- */
-  var settingsOverlay = document.getElementById("settingsOverlay");
-  document.getElementById("openSettingsBtn").addEventListener("click", function(){
-    settingsOverlay.classList.add("open");
-  });
-  document.getElementById("closeSettingsModal").addEventListener("click", function(){
-    settingsOverlay.classList.remove("open");
-  });
-  document.getElementById("saveSettingsBtn").addEventListener("click", function(){
-    settingsOverlay.classList.remove("open");
-  });
-
   /* ---------------- HELPERS ---------------- */
   function normalizeUrl(raw){
     var v = (raw || "").trim();
@@ -827,6 +886,66 @@ footer{padding:26px 0 40px;text-align:center;color:var(--ink-faint);font-size:.8
       return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];
     });
   }
+
+  /* ----------- AUTOMATIC CONTEXTUAL ICON DETECTOR ----------- */
+  function generateTypeBadgeHtml(url) {
+    var u = url.toLowerCase();
+    
+    var reelSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M2 8h20M2 16h20M7 2v6M17 2v6M7 16v6M17 16v6M10 11l5 3-5 3v-6z"/></svg>';
+    var videoSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>';
+    var photoSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>';
+    var linkSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>';
+
+    if (/instagram\.com\/(?:reel|reels)/i.test(u) || /tiktok\.com/i.test(u) || /youtube\.com\/shorts/i.test(u) || /snapchat\.com/i.test(u)) {
+      return '<div class="url-type-badge" title="Reel / Short Clip">' + reelSvg + '</div>';
+    } else if (/youtube\.com|youtu\.be|vimeo\.com/i.test(u) || /twitch\.tv/i.test(u) || /\.(mp4|webm|mkv|mov|avi|3gp)$/i.test(u)) {
+      return '<div class="url-type-badge" title="Video">' + videoSvg + '</div>';
+    } else if (/pinterest\.com|pin\.it/i.test(u) || /instagram\.com\/p\//i.test(u) || /\.(jpg|jpeg|png|gif|webp|svg|bmp)$/i.test(u)) {
+      return '<div class="url-type-badge" title="Photo / Visual Content">' + photoSvg + '</div>';
+    } else {
+      return '<div class="url-type-badge" title="Web Link">' + linkSvg + '</div>';
+    }
+  }
+
+  /* ---------------- PREMIUM MODAL CONFIRM DIALOG SYSTEM ---------------- */
+  var confirmDeleteOverlay = document.getElementById("confirmDeleteOverlay");
+  var confirmDeleteMessage = document.getElementById("confirmDeleteMessage");
+
+  function promptCustomDelete(options) {
+    deleteContext.type = options.type;
+    deleteContext.sectionId = options.sectionId || null;
+    deleteContext.urlId = options.urlId || null;
+    
+    confirmDeleteMessage.textContent = options.message;
+    confirmDeleteOverlay.classList.add("open");
+  }
+
+  function closeDeleteModal() {
+    confirmDeleteOverlay.classList.remove("open");
+    deleteContext = { type: null, sectionId: null, urlId: null };
+  }
+
+  document.getElementById("closeConfirmDeleteModal").addEventListener("click", closeDeleteModal);
+  document.getElementById("declineDeleteBtn").addEventListener("click", closeDeleteModal);
+
+  document.getElementById("confirmDeleteBtn").addEventListener("click", function() {
+    if (deleteContext.type === "section") {
+      var id = deleteContext.sectionId;
+      state.sections = state.sections.filter(function(s){ return s.id !== id; });
+      saveState();
+      renderHome();
+    } else if (deleteContext.type === "url") {
+      var sId = deleteContext.sectionId;
+      var uId = deleteContext.urlId;
+      var section = state.sections.find(function(s){ return s.id === sId; });
+      if (section) {
+        section.urls = section.urls.filter(function(u){ return u.id !== uId; });
+        saveState();
+        renderDetail();
+      }
+    }
+    closeDeleteModal();
+  });
   
   /* ---------------- RENDER: HOME ---------------- */
   var sectionsGrid = document.getElementById("sectionsGrid");
@@ -838,7 +957,7 @@ footer{padding:26px 0 40px;text-align:center;color:var(--ink-faint);font-size:.8
     q = q.toLowerCase();
     if(section.name.toLowerCase().indexOf(q) !== -1) return true;
     return section.urls.some(function(u){
-      var titleText = u.title ? u.title.toLowerCase() : "";
+      var titleText = (u.title && u.title !== "Fetching details...") ? u.title.toLowerCase() : getDomain(u.url).toLowerCase();
       return u.url.toLowerCase().indexOf(q) !== -1 || getDomain(u.url).toLowerCase().indexOf(q) !== -1 || titleText.indexOf(q) !== -1;
     });
   }
@@ -915,10 +1034,13 @@ footer{padding:26px 0 40px;text-align:center;color:var(--ink-faint);font-size:.8
         e.stopPropagation();
         var id = btn.getAttribute("data-del-section");
         var sec = state.sections.find(function(s){ return s.id === id; });
-        if(sec && confirm('Delete "' + sec.name + '" and all its saved links?')){
-          state.sections = state.sections.filter(function(s){ return s.id !== id; });
-          saveState();
-          renderHome();
+        if(sec){
+          // Trigger modern elegant confirmation decline overlay instead of window.confirm
+          promptCustomDelete({
+            type: "section",
+            sectionId: id,
+            message: 'Are you sure you want to delete the folder section "' + sec.name + '" and discard all ' + sec.urls.length + ' internal saved bookmark links?'
+          });
         }
       });
     });
@@ -955,7 +1077,7 @@ footer{padding:26px 0 40px;text-align:center;color:var(--ink-faint);font-size:.8
     var q = document.getElementById("searchInput").value.trim().toLowerCase();
     var urls = section.urls.filter(function(u){
       if(!q) return true;
-      var titleText = u.title ? u.title.toLowerCase() : "";
+      var titleText = (u.title && u.title !== "Fetching details...") ? u.title.toLowerCase() : getDomain(u.url).toLowerCase();
       return u.url.toLowerCase().indexOf(q) !== -1 || getDomain(u.url).toLowerCase().indexOf(q) !== -1 || titleText.indexOf(q) !== -1;
     });
 
@@ -963,8 +1085,8 @@ footer{padding:26px 0 40px;text-align:center;color:var(--ink-faint);font-size:.8
       if (currentSortValue === "newest") return new Date(b.addedAt) - new Date(a.addedAt);
       if (currentSortValue === "oldest") return new Date(a.addedAt) - new Date(b.addedAt);
       if (currentSortValue === "az") {
-         var titleA = a.title || a.url;
-         var titleB = b.title || b.url;
+         var titleA = (a.title && a.title !== "Fetching details...") ? a.title : a.url;
+         var titleB = (b.title && b.title !== "Fetching details...") ? b.title : b.url;
          return titleA.localeCompare(titleB);
       }
       return 0;
@@ -998,36 +1120,74 @@ footer{padding:26px 0 40px;text-align:center;color:var(--ink-faint);font-size:.8
       var finalThumb = item.thumb || (yid ? 'https://img.youtube.com/vi/' + yid + '/hqdefault.jpg' : screenshotUrl);
 
       var thumbInner = '<img src="' + escapeHtml(finalThumb) + '" alt="Thumbnail" onerror="this.replaceWith(Object.assign(document.createElement(\'div\'),{className:\'fallback\',innerHTML:\'' + escapeHtml(domain.charAt(0).toUpperCase()) + '\',style:\'background:' + fallbackGradient(domain) + '\'}))">';
-      var displayTitle = item.title && item.title !== "Fetching details..." ? item.title : domain;
+      
+      var displayTitle = domain; 
+      if (item.title && item.title !== "Fetching details..." && item.title.trim() !== "") {
+        displayTitle = item.title;
+      }
+
+      var typeBadgeHtml = generateTypeBadgeHtml(item.url);
       
       vcard.innerHTML =
         '<button class="vdelete" aria-label="Delete link" data-del-url="' + item.id + '">' +
           '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M8 6V4a1 1 0 011-1h6a1 1 0 011 1v2m2 0l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>' +
         '</button>' +
-        '<div class="thumb' + shapeClass + '">' + thumbInner +
+        '<div class="thumb' + shapeClass + '">' + 
+          typeBadgeHtml + 
+          thumbInner +
           '<div class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>' +
           '<div class="thumb-sprocket"></div>' +
         '</div>' +
         '<div class="vinfo">' +
           '<p class="domain" title="' + escapeHtml(displayTitle) + '">' + escapeHtml(displayTitle) + '</p>' +
           '<p class="url-line">' + escapeHtml(item.url) + '</p>' +
-          '<p class="timecode"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>' + fmtDate(item.addedAt) + '</p>' +
+          '<div class="meta-action-row">' +
+            '<button class="vtext-copy-btn" aria-label="Copy link address" data-copy-url="' + escapeHtml(item.url) + '">' +
+              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>' +
+              '<span>Copy</span>' +
+            '</button>' +
+            '<p class="timecode"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>' + fmtDate(item.addedAt) + '</p>' +
+          '</div>' +
         '</div>';
 
       vcard.addEventListener("click", function(e){
-        if(e.target.closest("[data-del-url]")) return;
+        if(e.target.closest("[data-del-url]") || e.target.closest("[data-copy-url]")) return;
         window.open(item.url, "_blank", "noopener");
       });
       videoGrid.appendChild(vcard);
+    });
+
+    // Copy action loop logic
+    videoGrid.querySelectorAll("[data-copy-url]").forEach(function(btn){
+      btn.addEventListener("click", function(e){
+        e.stopPropagation();
+        var urlToCopy = btn.getAttribute("data-copy-url");
+        navigator.clipboard.writeText(urlToCopy).then(function() {
+          var originalIcon = btn.innerHTML;
+          btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span>Copied</span>';
+          setTimeout(function() {
+            btn.innerHTML = originalIcon;
+          }, 1200);
+        }).catch(function(err) {
+          console.error("Failed to copy link address", err);
+        });
+      });
     });
 
     videoGrid.querySelectorAll("[data-del-url]").forEach(function(btn){
       btn.addEventListener("click", function(e){
         e.stopPropagation();
         var uid_ = btn.getAttribute("data-del-url");
-        section.urls = section.urls.filter(function(u){ return u.id !== uid_; });
-        saveState();
-        renderDetail();
+        var matchedUrl = section.urls.find(function(u){ return u.id === uid_; });
+        var targetLabel = (matchedUrl && matchedUrl.title) ? matchedUrl.title : domain;
+
+        // Custom premium popup dialog instead of standard browser confirm prompt
+        promptCustomDelete({
+          type: "url",
+          sectionId: activeSectionId,
+          urlId: uid_,
+          message: 'Are you sure you want to remove the link "' + targetLabel + '" from this section dashboard?'
+        });
       });
     });
   }
@@ -1158,7 +1318,7 @@ footer{padding:26px 0 40px;text-align:center;color:var(--ink-faint);font-size:.8
     if(!ok) return;
 
     var newItems = urls.map(function(u){ 
-      return { id: uid(), url: u, title: "Fetching details...", thumb: null, addedAt: new Date().toISOString() }; 
+      return { id: uid(), url: u, title: "", thumb: null, addedAt: new Date().toISOString() }; 
     });
 
     var section = {
@@ -1245,7 +1405,7 @@ footer{padding:26px 0 40px;text-align:center;color:var(--ink-faint);font-size:.8
     
     var newItems = [];
     urls.forEach(function(u){
-      var item = { id: uid(), url: u, title: "Fetching details...", thumb: null, addedAt: new Date().toISOString() };
+      var item = { id: uid(), url: u, title: "", thumb: null, addedAt: new Date().toISOString() };
       newItems.push(item);
       section.urls.push(item);
     });
@@ -1258,7 +1418,7 @@ footer{padding:26px 0 40px;text-align:center;color:var(--ink-faint);font-size:.8
   });
 
   /* ---------------- GLOBAL: close modals on backdrop / esc ---------------- */
-  [sectionOverlay, addUrlOverlay, editSectionOverlay, settingsOverlay].forEach(function(ov){
+  [sectionOverlay, addUrlOverlay, editSectionOverlay, settingsOverlay, confirmDeleteOverlay].forEach(function(ov){
     ov.addEventListener("click", function(e){
       if(e.target === ov){ ov.classList.remove("open"); }
     });
@@ -1269,6 +1429,7 @@ footer{padding:26px 0 40px;text-align:center;color:var(--ink-faint);font-size:.8
       addUrlOverlay.classList.remove("open");
       editSectionOverlay.classList.remove("open");
       settingsOverlay.classList.remove("open");
+      confirmDeleteOverlay.classList.remove("open");
     }
   });
 
